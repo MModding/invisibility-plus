@@ -1,4 +1,4 @@
-[![MModding](https://raw.githubusercontent.com/MModding/mmodding.github.io/main/assets/mmodding_dark_banner.png)](https://discord.gg/2Sr83HJpD3)
+[![MModding](https://raw.githubusercontent.com/MModding/art/main/brand/mmodding_dark_banner.png)](https://discord.gg/2Sr83HJpD3)
 
 # Invisibility+ #
 
@@ -10,7 +10,7 @@ Invisibility Plus is a mod that makes the next 4 levels of invisibility potions 
 
 ![Java CI with Gradle](https://github.com/MModding/MModding-Library/workflows/Java%20CI%20with%20Gradle/badge.svg?branch=main)
 
-<a href="https://modrinth.com/mod/mmodding-library"><img src="https://raw.githubusercontent.com/MModding/mmodding.github.io/main/assets/requires_library.png" width="300"></img></a>
+<a href="https://modrinth.com/mod/mmodding-library"><img src="https://raw.githubusercontent.com/MModding/art/main/mods/library/requires_mmodding_library.png" width="300"></img></a>
 
 ## Effects
 
@@ -29,13 +29,13 @@ The item in hand is no longer visible.
 ## Crafting
 
 ### Invisibility II
-![Invisibility II Recipe](https://raw.githubusercontent.com/MModding/mmodding.github.io/main/assets/invisibility_plus/inv2recipe.png)
+![Invisibility II Recipe](https://raw.githubusercontent.com/MModding/art/main/mods/invisibility_plus/inv2recipe.png)
 ### Invisibility III
-![Invisibility III Recipe](https://raw.githubusercontent.com/MModding/mmodding.github.io/main/assets/invisibility_plus/inv3recipe.png)
+![Invisibility III Recipe](https://raw.githubusercontent.com/MModding/art/main/mods/invisibility_plus/inv3recipe.png)
 ### Invisibility IV
-![Invisibility IV Recipe](https://raw.githubusercontent.com/MModding/mmodding.github.io/main/assets/invisibility_plus/inv4recipe.png)
+![Invisibility IV Recipe](https://raw.githubusercontent.com/MModding/art/main/mods/invisibility_plus/inv4recipe.png)
 ### Invisibility V
-![Invisibility V Recipe](https://raw.githubusercontent.com/MModding/mmodding.github.io/main/assets/invisibility_plus/inv5recipe.png)
+![Invisibility V Recipe](https://raw.githubusercontent.com/MModding/art/main/mods/invisibility_plus/inv5recipe.png)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
