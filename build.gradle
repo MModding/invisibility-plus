@@ -1,13 +1,17 @@
+import com.mmodding.gradle.api.EnvironmentTarget
+
 plugins {
 	id 'maven-publish'
-	alias(libs.plugins.quilt.loom)
+	alias(libs.plugins.fabric.loom)
+	alias(libs.plugins.mmodding.gradle)
 }
 
 archivesBaseName = project.archives_base_name
-version = project.version
+version = "${project.version}+${libs.versions.minecraft.get()}"
 group = project.maven_group
 
 repositories {
+	maven { url "https://maven.quiltmc.org/repository/release" }
 	maven { url 'https://jitpack.io' }
 	maven { url 'https://maven.terraformersmc.com/releases/' }
 }
@@ -19,20 +23,59 @@ dependencies {
 
 	mappings variantOf(libs.quilt.mappings) { classifier 'intermediary-v2' }
 
-	modImplementation libs.quilt.loader
+	modImplementation libs.fabric.loader
 
-	// QSL is not a complete API; You will need Quilted Fabric API to fill in the gaps.
-	// Quilted Fabric API will automatically pull in the correct QSL version.
-	modImplementation libs.quilted.fabric.api
+	// Fabric API
+	modImplementation libs.fabric.api
 
 	// MModding Library
 	modImplementation libs.mmodding
 }
 
+loom {
+	mods {
+		"invisibility_plus" {
+			sourceSet("main")
+		}
+	}
+}
+
+mmodding {
+	configureFabricModJson {
+		name = "Invisibility Plus"
+		namespace = "invisibility_plus"
+		group = "com.mmodding"
+		description = "Invisibility Plus is a mod that makes the next 4 levels of invisibility potions useful."
+		icon = "assets/invisibility_plus/icon.png"
+		addAuthor("MModding Team")
+		addContributor("FirstMegaGame4")
+		withContact {
+			it.homepage = "https://mmodding.com"
+			it.sources = "https://github.com/MModding/invisibility-plus/issues"
+			it.issues = "https://github.com/MModding/invisibility-plus"
+		}
+		environment = EnvironmentTarget.ANY
+		withEntrypoints {
+			it.init("com.mmodding.invisibility_plus.InvisibilityPlus")
+			it.client("com.mmodding.invisibility_plus.client.InvisibilityPlusClient")
+			it.custom("mmodding_bootstrap_init", "com.mmodding.invisibility_plus.bootstrap.InvisibilityPlusBootstrap")
+		}
+		addMixin("invisibility_plus.mixins.json")
+		withDependencies {
+			it.javaVersion = ">=" + 17
+			it.minecraftVersion = "~" + libs.versions.minecraft.get()
+			it.fabricLoaderVersion = ">=" + libs.versions.fabric.loader.get()
+			it.fabricApiVersion = ">=" + libs.versions.fabric.api.get()
+			it.addDependency("mmodding_lib", ">=" + libs.versions.mmodding.get() + "-")
+			// it.mmoddingLibraryVersion = ">=" + libs.versions.mmodding.get()
+		}
+	}
+}
+
 processResources {
 	inputs.property "version", version
 
-	filesMatching('quilt.mod.json') {
+	filesMatching('fabric.mod.json') {
 		expand "version": version
 	}
 }
@@ -58,9 +101,11 @@ java {
 }
 
 // If you plan to use a different file for the license, don't forget to change the file name here!
-jar {
-	from("LICENSE.md") {
-		rename { "${it}_${archivesBaseName}" }
+["jar", "sourcesJar"].each {
+	tasks.named(it).configure {
+		from("LICENSE.md") {
+			rename { "${it}_${archivesBaseName}" }
+		}
 	}
 }
 
