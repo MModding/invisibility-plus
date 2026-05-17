@@ -2,42 +2,35 @@ import com.mmodding.gradle.api.EnvironmentTarget
 
 plugins {
 	id 'maven-publish'
-	alias(libs.plugins.fabric.loom)
-	alias(libs.plugins.mmodding.gradle)
+	alias libs.plugins.fabric.loom
+	alias libs.plugins.mmodding.gradle
 }
 
-archivesBaseName = project.archives_base_name
-version = "${project.version}+${libs.versions.minecraft.get()}"
+version = "$project.mod_version+${libs.versions.minecraft.get()}"
 group = project.maven_group
 
-repositories {
-	maven { url "https://maven.quiltmc.org/repository/release" }
-	maven { url 'https://jitpack.io' }
-	maven { url 'https://maven.terraformersmc.com/releases/' }
+base {
+	archivesName = project.archives_base_name
 }
 
-// All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
-// See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
+repositories {
+	mavenCentral()
+	maven {
+		name = "JitPack"
+		url = "https://jitpack.io"
+	}
+	maven {
+		name = "QuiltMC"
+		url = "https://maven.quiltmc.org/repository/release"
+	}
+}
+
 dependencies {
 	minecraft libs.minecraft
+	implementation libs.fabric.loader
 
-	mappings variantOf(libs.quilt.mappings) { classifier 'intermediary-v2' }
-
-	modImplementation libs.fabric.loader
-
-	// Fabric API
-	modImplementation libs.fabric.api
-
-	// MModding Library
-	modImplementation libs.mmodding
-}
-
-loom {
-	mods {
-		"invisibility_plus" {
-			sourceSet("main")
-		}
-	}
+	implementation libs.mmodding
+	implementation libs.fabric.api
 }
 
 mmodding {
@@ -47,6 +40,7 @@ mmodding {
 		group = "com.mmodding"
 		description = "Invisibility Plus is a mod that makes the next 4 levels of invisibility potions useful."
 		icon = "assets/invisibility_plus/icon.png"
+		license = "PolyForm-Shield-1.0.0"
 		addAuthor("MModding Team")
 		addContributor("FirstMegaGame4")
 		withContact {
@@ -56,20 +50,18 @@ mmodding {
 		}
 		environment = EnvironmentTarget.ANY
 		withEntrypoints {
-			it.init("com.mmodding.invisibility_plus.InvisibilityPlus")
-			it.client("com.mmodding.invisibility_plus.client.InvisibilityPlusClient")
-			it.custom("mmodding_bootstrap_init", "com.mmodding.invisibility_plus.bootstrap.InvisibilityPlusBootstrap")
+			it.init("com.mmodding.invisibility.plus.InvisibilityPlus")
 		}
 		addMixin("invisibility_plus.mixins.json")
 		withDependencies {
-			it.javaVersion = ">=" + 17
+			it.javaVersion = ">=" + 25
 			it.minecraftVersion = "~" + libs.versions.minecraft.get()
 			it.fabricLoaderVersion = ">=" + libs.versions.fabric.loader.get()
 			it.fabricApiVersion = ">=" + libs.versions.fabric.api.get()
-			it.addDependency("mmodding_lib", ">=" + libs.versions.mmodding.get() + "-")
-			// it.mmoddingLibraryVersion = ">=" + libs.versions.mmodding.get()
+			it.mmoddingLibraryVersion = ">=" + libs.versions.mmodding.get() + "-"
 		}
 	}
+	loomModRegistration()
 }
 
 processResources {
@@ -81,38 +73,36 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = "UTF-8"
-	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	it.options.release = 17
+	it.options.release = 25
 }
 
-java {
-	// Still required by IDEs such as Eclipse and Visual Studio Code
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
 
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task if it is present.
+java {
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	// If this mod is going to be a library, then it should also generate Javadocs in order to aid with developement.
-	// Uncomment this line to generate them.
-	// withJavadocJar()
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
 
-// If you plan to use a different file for the license, don't forget to change the file name here!
-["jar", "sourcesJar"].each {
-	tasks.named(it).configure {
-		from("LICENSE.md") {
-			rename { "${it}_${archivesBaseName}" }
+
+jar {
+	inputs.property "archivesName", project.name
+
+	["LICENSE", "LICENSE.md"].each {
+		from(it) {
+			rename { "${it}_${project.name}"}
 		}
 	}
 }
 
-// Configure the maven publication
+// configure the maven publication
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
 			from components.java
 		}
 	}

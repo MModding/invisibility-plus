@@ -8,17 +8,16 @@ pluginManagement {
 	}
 	repositories {
 		maven {
-			name "JitPack"
-			url "https://jitpack.io"
+			name = "JitPack"
+			url = "https://jitpack.io"
 		}
 		maven {
-			name "QuiltMC"
-			url "https://maven.quiltmc.org/repository/release"
+			name = "QuiltMC"
+			url = "https://maven.quiltmc.org/repository/release"
 		}
-		// Currently needed for Intermediary and other temporary dependencies
 		maven {
-			name "Fabric"
-			url "https://maven.fabricmc.net/"
+			name = "FabricMC"
+			url = "https://maven.fabricmc.net"
 		}
 		gradlePluginPortal()
 	}
