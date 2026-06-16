@@ -41,4 +41,4 @@ The item in hand is no longer visible.
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
-[LGPL-3.0](https://opensource.org/licenses/LGPL-3.0)
+[PolyForm-Shield-1.0.0]([https://opensource.org/licenses/LGPL-3.0](https://github.com/MModding/invisibility-plus/blob/26.2/LICENSE.md))
