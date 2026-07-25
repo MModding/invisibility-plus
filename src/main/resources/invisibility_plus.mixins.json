@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "EntityMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "client.WingsLayerMixin"
   ],
   "client": [
+    "client.CustomHeadLayerMixin",
     "client.HumanoidArmorLayerMixin",
     "client.ItemInHandLayerMixin",
     "client.LivingEntityRendererMixin"

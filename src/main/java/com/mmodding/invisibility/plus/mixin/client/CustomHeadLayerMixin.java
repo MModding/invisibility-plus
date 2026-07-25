@@ -1,0 +1,23 @@
+package com.mmodding.invisibility.plus.mixin.client;
+
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.mmodding.invisibility.plus.InvisibilityPlus;
+import com.mmodding.invisibility.plus.client.init.InvisibilityPlusDataKeys;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import org.spongepowered.asm.mixin.Mixin;
+
+@Mixin(CustomHeadLayer.class)
+public class CustomHeadLayerMixin<S extends LivingEntityRenderState> {
+
+	@WrapMethod(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;FF)V")
+	private void cancelWingsRendering(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, S state, float yRot, float xRot, Operation<Void> original) {
+		Integer value = state.getData(InvisibilityPlusDataKeys.INV_LEVEL);
+		if (!InvisibilityPlus.isEffectEnabled(3) || value == null || value < 3) {
+			original.call(poseStack, submitNodeCollector, lightCoords, state, yRot, xRot);
+		}
+	}
+}
