@@ -8,13 +8,10 @@ import com.mmodding.library.config.api.content.ConfigSpec;
 import com.mmodding.library.core.api.AdvancedContainer;
 import com.mmodding.library.core.api.ExtendedModInitializer;
 import com.mmodding.library.core.api.management.ElementsManager;
-import net.fabricmc.fabric.api.registry.FabricPotionBrewingBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potions;
 
 public class InvisibilityPlus implements ExtendedModInitializer {
 
@@ -37,17 +34,6 @@ public class InvisibilityPlus implements ExtendedModInitializer {
 	@Override
 	public void onInitialize(AdvancedContainer mod) {
 		mod.logger().info("Oh, I can sense that you like to hide!");
-
-		FabricPotionBrewingBuilder.BUILD.register(builder -> {
-			builder.addMix(Potions.INVISIBILITY, Items.GLOWSTONE_DUST, InvisibilityPlusPotions.ENHANCED_INVISIBILITY);
-			builder.addMix(InvisibilityPlusPotions.ENHANCED_INVISIBILITY, Items.QUARTZ, InvisibilityPlusPotions.STRONGLY_ENHANCED_INVISIBILITY);
-			builder.addMix(InvisibilityPlusPotions.STRONGLY_ENHANCED_INVISIBILITY, Items.GLOWSTONE, InvisibilityPlusPotions.REINFORCED_INVISIBILITY);
-			builder.addMix(InvisibilityPlusPotions.REINFORCED_INVISIBILITY, Items.QUARTZ_BLOCK, InvisibilityPlusPotions.STRONGLY_REINFORCED_INVISIBILITY);
-			builder.addMix(InvisibilityPlusPotions.ENHANCED_INVISIBILITY, Items.REDSTONE, InvisibilityPlusPotions.LONG_ENHANCED_INVISIBILITY);
-			builder.addMix(InvisibilityPlusPotions.STRONGLY_ENHANCED_INVISIBILITY, Items.REDSTONE, InvisibilityPlusPotions.LONG_STRONGLY_ENHANCED_INVISIBILITY);
-			builder.addMix(InvisibilityPlusPotions.REINFORCED_INVISIBILITY, Items.REDSTONE, InvisibilityPlusPotions.LONG_REINFORCED_INVISIBILITY);
-			builder.addMix(InvisibilityPlusPotions.STRONGLY_REINFORCED_INVISIBILITY, Items.REDSTONE, InvisibilityPlusPotions.LONG_STRONGLY_REINFORCED_INVISIBILITY);
-		});
 	}
 
 	public static boolean checkIfApplied(Object entity, int requiredAmplifier) {
